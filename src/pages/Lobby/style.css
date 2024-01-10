@@ -1,0 +1,13 @@
+.lobby-container{
+    height:80vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.control-style{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
