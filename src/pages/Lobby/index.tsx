@@ -17,9 +17,10 @@ export const Lobby = () => {
         <div className="control-style">
           <Input
             value={roomCode}
+            onPressEnter={handleJoinRoom}
             onChange={(e) => setRoomCode(e.target.value)}
             type="text"
-            placeholder="Example: coders Hub"
+            placeholder="Example: coders-Hub"
           />
           <Button onClick={handleJoinRoom} disabled={roomCode === ""}>
             Join Room
