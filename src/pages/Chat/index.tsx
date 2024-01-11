@@ -3,12 +3,14 @@ import { useParams } from "react-router-dom";
 import { Input, Button } from "antd";
 import Pubnub from "pubnub";
 import "../Lobby/style.css";
+import "./style.css";
 
+const myID = `${Date.now()}`;
 const pubnub = new Pubnub({
   publishKey: "pub-c-27e4e1bb-fee7-426c-bb0d-7d60ffbfa7f5",
   subscribeKey: "sub-c-afb7395b-dedb-428d-959d-ebcfd141a8ac",
   secretKey: "sec-c-NTAwOGFiNGQtNmNmNi00NTAzLThkNjAtYTk3MzJjNjZjOTBj",
-  userId: `${Date.now()}`,
+  userId: myID,
 });
 
 export const ChatPage: FC = () => {
@@ -56,9 +58,14 @@ export const ChatPage: FC = () => {
   return (
     <div>
       <h1>Chat App {roomCode}</h1>
-      <div>
+      <div className="messages">
         {messages.map((message) => (
-          <div key={message.timetoken}>{message.message}</div>
+          <div
+            className={message.publisher === myID ? "my-message" : ""}
+            key={message.timetoken}
+          >
+            {message.message}
+          </div>
         ))}
       </div>
       <div className="control-style">
