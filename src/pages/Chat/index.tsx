@@ -31,6 +31,7 @@ export const ChatPage: FC = () => {
       };
     }
   }, [roomCode]);
+
   const handleSendMessage = useCallback(() => {
     if (typedMessage && roomCode) {
       pubnub.publish({
