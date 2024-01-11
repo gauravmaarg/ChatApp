@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect, useState, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { Input, Button } from "antd";
 import Pubnub from "pubnub";
@@ -17,6 +17,7 @@ export const ChatPage: FC = () => {
   const { roomCode } = useParams();
   const [typedMessage, setTypedMessage] = useState<string>("");
   const [messages, setMessages] = useState<Pubnub.MessageEvent[]>([]);
+  const messageContainer = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (roomCode) {
@@ -43,6 +44,13 @@ export const ChatPage: FC = () => {
   }, [roomCode, typedMessage]);
 
   useEffect(() => {
+    if (messages && messageContainer.current) {
+      messageContainer.current.scrollTop =
+        messageContainer.current.scrollHeight;
+    }
+  }, [messages]);
+
+  useEffect(() => {
     if (roomCode) {
       const listner = {
         message: (messageEvent: Pubnub.MessageEvent) => {
@@ -56,10 +64,11 @@ export const ChatPage: FC = () => {
       };
     }
   }, [roomCode]);
+
   return (
     <div>
       <h1>Chat App {roomCode}</h1>
-      <div className="messages">
+      <div ref={messageContainer} className="messages">
         {messages.map((message) => (
           <div
             className={message.publisher === myID ? "my-message" : ""}
@@ -72,6 +81,7 @@ export const ChatPage: FC = () => {
       <div className="control-style">
         <Input
           value={typedMessage}
+          onPressEnter={handleSendMessage}
           onChange={(e) => setTypedMessage(e.target.value)}
           type="text"
           placeholder="Type your message here...."
